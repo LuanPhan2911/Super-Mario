@@ -20,6 +20,10 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded { get; private set; }
     public bool isJumping { get; private set; }
 
+    public bool isSliding => (inputAxis > 0f && velocity.x < 0f) || (inputAxis < 0f && velocity.x > 0f);
+
+    public bool isRunning => Mathf.Abs(velocity.x) > 0.25f || Mathf.Abs(inputAxis) > 0.25f;
+
     private void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
@@ -97,7 +101,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("PowerUp"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            if (this.transform.DotTest(other.transform, Vector2.down))
+            {
+                this.velocity.y = this.jumpForce / 2f;
+                this.isJumping = true;
+            }
+
+        }
+        else if (other.gameObject.layer != LayerMask.NameToLayer("PowerUp"))
         {
             if (this.transform.DotTest(other.transform, Vector2.up))
             {
