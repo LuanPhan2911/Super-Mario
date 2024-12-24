@@ -8,16 +8,20 @@ public class Goomba : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Player player = other.gameObject.GetComponent<Player>();
+
         if (other.gameObject.CompareTag("Player"))
         {
-            if (other.transform.DotTest(transform, Vector2.down))
+            Player player = other.gameObject.GetComponent<Player>();
+            if (player.isStarPowered)
+            {
+                Hit();
+            }
+            else if (other.transform.DotTest(transform, Vector2.down))
             {
                 Flatten();
             }
             else
             {
-
                 player.Hit();
             }
         }

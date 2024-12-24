@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private new Rigidbody2D rigidbody;
     private new Camera camera;
+    private new Collider2D collider;
 
     public float speed = 8.0f;
 
@@ -24,10 +25,26 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isRunning => Mathf.Abs(velocity.x) > 0.25f || Mathf.Abs(inputAxis) > 0.25f;
 
+
+    private void OnEnable()
+    {
+        rigidbody.isKinematic = false;
+        collider.enabled = true;
+        velocity = Vector2.zero;
+        isJumping = false;
+    }
+    private void OnDisable()
+    {
+        rigidbody.isKinematic = true;
+        collider.enabled = false;
+        velocity = Vector2.zero;
+        isJumping = false;
+    }
     private void Awake()
     {
         this.rigidbody = GetComponent<Rigidbody2D>();
         this.camera = Camera.main;
+        this.collider = GetComponent<Collider2D>();
         Application.targetFrameRate = 60;
     }
 
@@ -44,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
+
     private void FixedUpdate()
     {
         Vector2 position = this.rigidbody.position;

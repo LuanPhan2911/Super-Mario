@@ -6,7 +6,7 @@ public class EntityMovement : MonoBehaviour
 {
     public Vector2 direction = Vector2.left;
     private Vector2 velocity;
-    public float speed;
+    public float speed = 2f;
     public float gravity = -9.81f;
 
     private new Rigidbody2D rigidbody;
